@@ -79,6 +79,32 @@ class DetailService extends Service {
     await app.mysql.insert("amount_detail", data);
     return { code: 200, msg: "成功" };
   }
+  async updateAmountDetail(amountId, data) {
+    const { app, ctx } = this;
+    const { id } = ctx.user;
+    const { icon, name, amount, date, isExpend } = data;
+    if (icon == null || name == null || amount == null || date == null || isExpend == null)
+      return {
+        code: 500,
+        msg: "参数错误",
+      };
+    const res = await app.mysql.select("amount_detail", { where: { id: amountId, userid: id } });
+    if (res.length > 0) {
+      await app.mysql.update("amount_detail", data, { where: { id: amountId } });
+    } else {
+      return { code: 500, msg: "参数错误" };
+    }
+    return { code: 200, msg: "修改成功" };
+  }
+  async deleteAmountDetail(id) {
+    const { app } = this;
+    const res = await app.mysql.select("amount_detail", { where: { id } });
+    if (!res.length) {
+      return { code: 500, msg: "参数错误" };
+    }
+    await app.mysql.delete("amount_detail", { id });
+    return { code: 200, msg: "删除成功" };
+  }
 
   async getAmountDetail(id) {
     const { app } = this;
