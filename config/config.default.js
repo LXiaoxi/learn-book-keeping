@@ -56,6 +56,14 @@ module.exports = (appInfo) => {
       expiresIn: "24h",
     },
   };
+  config.cluster = {
+    listen: {
+      path: "",
+      post: "7001",
+      hostname: "192.168.1.214",
+      // hostname: "127.0.0.1",
+    },
+  };
   config.middleware = [];
   // add your user config here
   const userConfig = {

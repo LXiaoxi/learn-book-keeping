@@ -90,6 +90,7 @@ class DetailService extends Service {
       };
     const res = await app.mysql.select("amount_detail", { where: { id: amountId, userid: id } });
     if (res.length > 0) {
+      data.date = new Date(date).getTime();
       await app.mysql.update("amount_detail", data, { where: { id: amountId } });
     } else {
       return { code: 500, msg: "参数错误" };
@@ -115,7 +116,7 @@ class DetailService extends Service {
         name,
         remark,
         amount,
-        date,
+        time date,
         IF(isExpend, 'true', 'false') isExpend
       FROM amount_detail
       WHERE id = ${id}
